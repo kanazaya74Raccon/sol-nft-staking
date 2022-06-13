@@ -14,7 +14,8 @@ use state::*;
 const REWARDER_PREFIX: &[u8] = b"rewarder";
 const ACCOUNT_PREFIX: &[u8] = b"stake_account";
 
-declare_id!("3zPPaZhN3tAkSJhjcEcyT7kAM6b2stQmJf65Fw9sMZa3");
+// declare_id!("3zPPaZhN3tAkSJhjcEcyT7kAM6b2stQmJf65Fw9sMZa3");
+declare_id!("6Xde61SaqTSVF61efcHMHwTGkq5ydTpKbGeUZnFrRZhy");
 
 #[program]
 pub mod sol_nft_staking {
@@ -279,11 +280,12 @@ pub struct InitializeRewarder<'info> {
         space = NftStakeRewarder::calculate_len(creators.len(), &collection),
         payer = authority,
         seeds = [collection.as_bytes(), &id().to_bytes(), REWARDER_PREFIX],
-        bump = _rewarder_bump,
+        bump,
     )]
     pub rewarder: Account<'info, NftStakeRewarder>,
 
     /// The owner of the rewarder account
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     #[account(mut, signer)]
     pub authority: AccountInfo<'info>,
 
@@ -292,6 +294,7 @@ pub struct InitializeRewarder<'info> {
         seeds = [collection.as_bytes(), &id().to_bytes(), REWARDER_PREFIX, &rewarder.key().to_bytes()],
         bump = reward_authority_bump,
     )]
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     pub reward_authority: AccountInfo<'info>,
 
     /// The SPL Mint of the reward token. Must have the reward authority mint authority
@@ -314,6 +317,7 @@ pub struct UpdateRewardRate<'info> {
     pub rewarder: Account<'info, NftStakeRewarder>,
 
     /// The owner of the rewarder account
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     #[account(signer)]
     pub authority: AccountInfo<'info>,
 }
@@ -322,6 +326,7 @@ pub struct UpdateRewardRate<'info> {
 #[instruction(bump: u8)]
 pub struct InitializeStakeAccount<'info> {
     /// The owner of the stake account
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     #[account(mut, signer)]
     pub owner: AccountInfo<'info>,
 
@@ -331,7 +336,7 @@ pub struct InitializeStakeAccount<'info> {
         payer = owner,
         space = NftStakeAccount::LEN,
         seeds = [rewarder.collection.as_bytes(), &id().to_bytes(), ACCOUNT_PREFIX, &rewarder.key().to_bytes(), &owner.key().to_bytes()],
-        bump = bump,
+        bump,
     )]
     pub stake_account: Account<'info, NftStakeAccount>,
 
@@ -346,6 +351,7 @@ pub struct InitializeStakeAccount<'info> {
 // #[instruction(_vault_bump: u8)]
 pub struct StakeNft<'info> {
     /// The owner of the stake account
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     #[account(mut, signer)]
     pub owner: AccountInfo<'info>,
 
@@ -358,6 +364,7 @@ pub struct StakeNft<'info> {
         seeds = [rewarder.collection.as_bytes(), &id().to_bytes(), REWARDER_PREFIX, &rewarder.key().to_bytes()],
         bump = rewarder.reward_authority_bump,
     )]
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     pub reward_authority: AccountInfo<'info>,
 
     /// The stake account for the owner
@@ -383,6 +390,7 @@ pub struct StakeNft<'info> {
         has_one = owner @ StakingError::InvalidOwnerForRewardToken,
         constraint = reward_token_account.mint == rewarder.reward_mint @ StakingError::InvalidRewardTokenAccount,
     )]
+    
     pub reward_token_account: Account<'info, TokenAccount>,
 
     /// The Mint of the NFT
@@ -409,6 +417,7 @@ pub struct StakeNft<'info> {
 #[derive(Accounts)]
 pub struct UnstakeNft<'info> {
     /// The owner of the stake account
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     #[account(mut, signer)]
     pub owner: AccountInfo<'info>,
 
@@ -421,6 +430,7 @@ pub struct UnstakeNft<'info> {
         seeds = [rewarder.collection.as_bytes(), &id().to_bytes(), REWARDER_PREFIX, &rewarder.key().to_bytes()],
         bump = rewarder.reward_authority_bump,
     )]
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     pub reward_authority: AccountInfo<'info>,
 
     /// The stake account for the owner
@@ -470,6 +480,7 @@ pub struct UnstakeNft<'info> {
 #[derive(Accounts)]
 pub struct Claim<'info> {
     /// The owner of the stake account
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     #[account(signer)]
     pub owner: AccountInfo<'info>,
 
@@ -507,6 +518,7 @@ pub struct Claim<'info> {
         seeds = [rewarder.collection.as_bytes(), &id().to_bytes(), REWARDER_PREFIX, &rewarder.key().to_bytes()],
         bump = rewarder.reward_authority_bump,
     )]
+    /// CHECK:` doc comment explaining why no checks through types are necessary.
     pub reward_authority: AccountInfo<'info>,
 
     pub token_program: Program<'info, Token>,

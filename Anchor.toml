@@ -1,13 +1,13 @@
 [programs.localnet]
-sol_nft_staking = "3zPPaZhN3tAkSJhjcEcyT7kAM6b2stQmJf65Fw9sMZa3"
+sol_nft_staking = "6Xde61SaqTSVF61efcHMHwTGkq5ydTpKbGeUZnFrRZhy"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
-wallet = "./test-keypair.json"
 
+cluster = "devnet"
+wallet = "/home/king/.config/solana/id.json"
 [test]
 # Clone the metadata program and the executable account associated with it
 # for use in integration tests
